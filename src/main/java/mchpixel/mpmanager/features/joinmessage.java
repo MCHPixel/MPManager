@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class joinmessage {
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         // Don't open auction house here
@@ -17,4 +18,5 @@ public class joinmessage {
 
         player.sendTitle(ChatColor.GOLD + "Welcome to MCHPixel", player.getName(), 20, 60, 20);
     }
+
 }
