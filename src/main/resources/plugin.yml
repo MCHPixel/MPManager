@@ -1,0 +1,5 @@
+name: MPManager
+version: '${project.version}'
+main: mchpixel.mpmanager.MPManager
+api-version: '1.20'
+load: STARTUP
