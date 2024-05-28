@@ -13,13 +13,14 @@ public class joinmessage implements Listener {
         // Don't open auction house here
         Player player = event.getPlayer();
 
-        String username = ChatColor.stripColor(player.getName());
+        String username = ChatColor.stripColor(player.getDisplayName());
 
         player.sendMessage(ChatColor.DARK_PURPLE + "Welcome back " +
                 ChatColor.MAGIC + username +
                 ChatColor.DARK_PURPLE + " to MCHPixel!");
 
-        player.sendTitle(ChatColor.GOLD + "Welcome to MCHPixel",ChatColor.GRAY + username, 20, 100, 20);
+        player.sendTitle(ChatColor.GOLD +
+                "Welcome to MCHPixel", ChatColor.GRAY + username, 20, 100, 20);
     }
 
 }
