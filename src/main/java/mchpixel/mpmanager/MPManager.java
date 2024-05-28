@@ -14,5 +14,6 @@ public final class MPManager extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        getLogger().info("Disabled the Plugin");
     }
 }
