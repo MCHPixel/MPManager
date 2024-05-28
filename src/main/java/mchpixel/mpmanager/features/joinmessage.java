@@ -16,7 +16,7 @@ public class joinmessage implements Listener {
         String username = ChatColor.stripColor(player.getDisplayName());
 
         player.sendMessage(ChatColor.DARK_PURPLE + "Welcome back " +
-                ChatColor.MAGIC + username +
+                ChatColor.BLUE + ChatColor.BOLD + username +
                 ChatColor.DARK_PURPLE + " to MCHPixel!");
 
         player.sendTitle(ChatColor.GOLD +
