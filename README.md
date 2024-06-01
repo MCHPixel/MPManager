@@ -4,7 +4,7 @@ Note!
 files out of the different Branches are different see here:
 - Master = Full Realease
 - Src = Prerealeases
-- Test = Beta Realease
+- Beta = Beta Realease
 
 # Your Plugin Name
 
