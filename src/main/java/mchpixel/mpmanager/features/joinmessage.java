@@ -5,12 +5,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class joinmessage implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        // Don't open auction house here
+
+        // Don't open auctionhouse here
         Player player = event.getPlayer();
 
         String username = ChatColor.stripColor(player.getDisplayName());
@@ -21,6 +23,12 @@ public class joinmessage implements Listener {
 
         player.sendTitle(ChatColor.GOLD +
                 "Welcome to MCHPixel", ChatColor.GRAY + username, 20, 100, 20);
+
+        System.out.println(ChatColor.BOLD + player.getDisplayName() + ChatColor.RESET + ChatColor.DARK_PURPLE + " has joined!");
     }
 
+    @EventHandler
+    public void newJoin(PlayerQuitEvent event) {
+
+    }
 }
