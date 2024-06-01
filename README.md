@@ -19,7 +19,7 @@ This plugin is proprietary software, and its use is subject to the terms and con
 ## Installation
 
 Step 1:
-  Download it from the Official Website
+  Download it from our Official Website MCHPixel.com
   
 Step 2:
   Throw it into your plugins folder
@@ -32,12 +32,12 @@ Used to make moderating a **Minecraft Server** easier than usual
 
 ## Support
 
-For support, questions, or issues related to this plugin, please contact [your contact information].
+For support, questions, or issues related to this plugin, please contact us on our Website under MCHPixel.com.
 
 
 ## Contributing
 
-Contributions to this project are not accepted at this time. If you encounter bugs or issues, please report them directly to mchpixel@outlook.de or our Website.
+Contributions to this project are not accepted at this time. If you encounter bugs or issues, please report them directly to our Website under MCHPixel.com.
 
 
 ## Disclaimer
