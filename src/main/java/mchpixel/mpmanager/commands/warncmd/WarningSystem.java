@@ -2,60 +2,88 @@ package mchpixel.mpmanager.commands.warncmd;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class WarningSystem {
-    private static final String FILE_PATH = "warnings.json";
-    private List<Warning> warnings;
+    private List<Warning> warnings = new ArrayList<>();
+    private File dataFile;
     private Gson gson;
 
-    public WarningSystem() {
+    public WarningSystem(File dataFolder) {
+        File pluginFolder = new File(dataFolder, "MPManager");
+        if (!pluginFolder.exists()) {
+            pluginFolder.mkdirs();
+        }
+        dataFile = new File(pluginFolder, "warnings.json");
         gson = new Gson();
         loadWarnings();
     }
 
-    private void loadWarnings() {
-        try (Reader reader = new FileReader(FILE_PATH)) {
-            Type listType = new TypeToken<ArrayList<Warning>>() {}.getType();
-            warnings = gson.fromJson(reader, listType);
-            if (warnings == null) {
-                warnings = new ArrayList<>();
-            }
-            System.out.println("Warnings loaded: " + warnings.size());
-        } catch (IOException e) {
-            warnings = new ArrayList<>();
-            System.out.println("Could not load warnings: " + e.getMessage());
-        }
-    }
-
-    public void saveWarnings() {
-        try (Writer writer = new FileWriter(FILE_PATH)) {
-            gson.toJson(warnings, writer);
-            System.out.println("Warnings saved: " + warnings.size());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void addWarning(String playerName, String reason) {
-        warnings.add(new Warning(playerName, reason, System.currentTimeMillis()));
-        System.out.println("Added warning for player: " + playerName);
+        Warning warning = new Warning(playerName, reason);
+        warnings.add(warning);
         saveWarnings();
     }
 
     public List<Warning> getWarnings(String playerName) {
         List<Warning> playerWarnings = new ArrayList<>();
-        System.out.println("Getting warnings for player: " + playerName);
         for (Warning warning : warnings) {
-            System.out.println("Checking warning for player: " + warning.getPlayerName());
             if (warning.getPlayerName().equalsIgnoreCase(playerName)) {
                 playerWarnings.add(warning);
             }
         }
-        System.out.println("Warnings found: " + playerWarnings.size());
         return playerWarnings;
+    }
+
+    public void removeAllWarnings(String playerName) {
+        Iterator<Warning> iterator = warnings.iterator();
+        while (iterator.hasNext()) {
+            Warning warning = iterator.next();
+            if (warning.getPlayerName().equalsIgnoreCase(playerName)) {
+                iterator.remove();
+            }
+        }
+        saveWarnings();
+    }
+
+    public boolean removeWarning(String playerName, String reason) {
+        Iterator<Warning> iterator = warnings.iterator();
+        while (iterator.hasNext()) {
+            Warning warning = iterator.next();
+            if (warning.getPlayerName().equalsIgnoreCase(playerName) && warning.getReason().equalsIgnoreCase(reason)) {
+                iterator.remove();
+                saveWarnings();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void saveWarnings() {
+        try (FileWriter writer = new FileWriter(dataFile)) {
+            gson.toJson(warnings, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadWarnings() {
+        if (!dataFile.exists()) {
+            return;
+        }
+        try (FileReader reader = new FileReader(dataFile)) {
+            Type listType = new TypeToken<List<Warning>>() {}.getType();
+            warnings = gson.fromJson(reader, listType);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

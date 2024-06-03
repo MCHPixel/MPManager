@@ -6,11 +6,16 @@ load: STARTUP
 
 commands:
   warn:
-    description: "Gives a Player a Warn"
-    aliases: [warnplayer, wp]
+    description: Warn a certain player
+    aliases: [warnplayer]
     permission: mpmanager.operators.warn
 
   listwarns:
     description: List warnings for a player
-    aliases: [listplayerswarnings, listwarnings, lw, lpw]
+    aliases: [listwarnings]
     permission: mpmanager.operators.listwarnings
+
+  removewarns:
+    description: Remove warnings for a player
+    aliases: [removewarnings]
+    permission: mpmanager.operators.removewarnings

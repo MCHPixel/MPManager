@@ -1,9 +1,6 @@
 package mchpixel.mpmanager;
 
-import mchpixel.mpmanager.commands.warncmd.ListWarningsCommand;
-import mchpixel.mpmanager.commands.warncmd.WarnCommand;
-import mchpixel.mpmanager.commands.warncmd.Warning;
-import mchpixel.mpmanager.commands.warncmd.WarningSystem;
+import mchpixel.mpmanager.commands.warncmd.*;
 import mchpixel.mpmanager.features.joinmessage;
 
 import org.bukkit.ChatColor;
@@ -23,9 +20,10 @@ public final class MPManager extends JavaPlugin {
         // Plugin startup logic
         getServer().getPluginManager().registerEvents(new joinmessage(), this);
 
-        warningSystem = new WarningSystem();
+        warningSystem = new WarningSystem(getDataFolder());
         this.getCommand("warn").setExecutor(new WarnCommand(warningSystem));
-        this.getCommand("listwarnings").setExecutor(new ListWarningsCommand(warningSystem));
+        this.getCommand("listwarns").setExecutor(new ListWarningsCommand(warningSystem));
+        this.getCommand("removewarns").setExecutor(new RemoveWarningsCommand(warningSystem));
 
         getServer().getPluginManager().registerEvents((Listener) new PlayerJoinListener(warningSystem), this);
 

@@ -3,6 +3,7 @@ package mchpixel.mpmanager.commands.warncmd;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.ChatColor;
 
 import java.util.List;
 
@@ -15,23 +16,21 @@ public class ListWarningsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 1) {
+        if (args.length < 1) {
             sender.sendMessage("Usage: /listwarnings <player>");
             return false;
         }
 
         String playerName = args[0];
-        List<Warning> playerWarnings = warningSystem.getWarnings(playerName);
-
-        if (playerWarnings.isEmpty()) {
+        List<Warning> warnings = warningSystem.getWarnings(playerName);
+        if (warnings.isEmpty()) {
             sender.sendMessage("No warnings found for player " + playerName);
         } else {
             sender.sendMessage("Warnings for " + playerName + ":");
-            for (Warning warning : playerWarnings) {
-                sender.sendMessage("- " + warning.getReason());
+            for (Warning warning : warnings) {
+                sender.sendMessage(ChatColor.RED + warning.getReason() + " - " + warning.getTimestamp());
             }
         }
-
         return true;
     }
 }

@@ -1,11 +1,17 @@
 package mchpixel.mpmanager.commands.warncmd;
 
+import java.time.LocalDateTime;
+
 public class Warning {
     private String playerName;
     private String reason;
-    private long timestamp;
+    private LocalDateTime timestamp;
 
-    public Warning(String playerName, String reason, long timestamp) {
+    public Warning(String playerName, String reason) {
+        this(playerName, reason, LocalDateTime.now());
+    }
+
+    public Warning(String playerName, String reason, LocalDateTime timestamp) {
         this.playerName = playerName;
         this.reason = reason;
         this.timestamp = timestamp;
@@ -19,7 +25,7 @@ public class Warning {
         return reason;
     }
 
-    public long getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 }
