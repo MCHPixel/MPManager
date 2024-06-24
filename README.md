@@ -32,7 +32,7 @@ Used to make moderating a **Minecraft Server** easier than usual
 
 ## Support
 
-For support, questions, or issues related to this plugin, please contact us on our Website under MCHPixel.com.
+For support, questions, or issues related to this plugin, please contact us in Github under the issue section.
 
 
 ## Contributing
