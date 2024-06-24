@@ -1,20 +1,21 @@
 package mchpixel.mpmanager.commands.warncmd;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Warning {
     private String playerName;
     private String reason;
-    private LocalDateTime timestamp;
+    private String warnedBy;
+    private String timestamp;
 
-    public Warning(String playerName, String reason) {
-        this(playerName, reason, LocalDateTime.now());
-    }
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-    public Warning(String playerName, String reason, LocalDateTime timestamp) {
+    public Warning(String playerName, String reason, String warnedBy) {
         this.playerName = playerName;
         this.reason = reason;
-        this.timestamp = timestamp;
+        this.warnedBy = warnedBy;
+        this.timestamp = LocalDateTime.now().format(formatter);
     }
 
     public String getPlayerName() {
@@ -25,7 +26,11 @@ public class Warning {
         return reason;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getWarnedBy() {
+        return warnedBy;
+    }
+
+    public String getTimestamp() {
         return timestamp;
     }
 }

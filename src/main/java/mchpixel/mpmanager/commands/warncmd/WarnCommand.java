@@ -24,13 +24,14 @@ public class WarnCommand implements CommandExecutor {
 
         String playerName = args[0];
         String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        String warnedBy = sender.getName();
 
-        warningSystem.addWarning(playerName, reason);
+        warningSystem.addWarning(playerName, reason, warnedBy);
         sender.sendMessage("Player " + playerName + " has been warned for: " + reason);
 
         Player player = sender.getServer().getPlayerExact(playerName);
         if (player != null && player.isOnline()) {
-            player.sendMessage(ChatColor.RED + "You have been warned for: " + reason);
+            player.sendMessage(ChatColor.RED + "You have been warned for: " + reason + " by " + warnedBy);
         }
 
         return true;

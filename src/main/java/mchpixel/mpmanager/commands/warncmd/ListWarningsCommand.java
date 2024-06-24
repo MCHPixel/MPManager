@@ -28,7 +28,7 @@ public class ListWarningsCommand implements CommandExecutor {
         } else {
             sender.sendMessage("Warnings for " + playerName + ":");
             for (Warning warning : warnings) {
-                sender.sendMessage(ChatColor.RED + warning.getReason() + " - " + warning.getTimestamp());
+                sender.sendMessage(ChatColor.RED + warning.getReason() + " - " + ChatColor.GRAY + warning.getTimestamp() + warning.getWarnedBy());
             }
         }
         return true;

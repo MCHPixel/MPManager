@@ -1,16 +1,17 @@
 package mchpixel.mpmanager.commands.warncmd;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import mchpixel.mpmanager.LocalDateTimeAdapter;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WarningSystem {
     private List<Warning> warnings = new ArrayList<>();
@@ -18,39 +19,33 @@ public class WarningSystem {
     private Gson gson;
 
     public WarningSystem(File dataFolder) {
-        File pluginFolder = new File(dataFolder, "MPManager");
+        File pluginFolder = new File(String.valueOf(dataFolder));
         if (!pluginFolder.exists()) {
             pluginFolder.mkdirs();
         }
         dataFile = new File(pluginFolder, "warnings.json");
-        gson = new Gson();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
+        gson = gsonBuilder.create();
+
         loadWarnings();
     }
 
-    public void addWarning(String playerName, String reason) {
-        Warning warning = new Warning(playerName, reason);
+    public void addWarning(String playerName, String reason, String warnedBy) {
+        Warning warning = new Warning(playerName, reason, warnedBy);
         warnings.add(warning);
         saveWarnings();
     }
 
     public List<Warning> getWarnings(String playerName) {
-        List<Warning> playerWarnings = new ArrayList<>();
-        for (Warning warning : warnings) {
-            if (warning.getPlayerName().equalsIgnoreCase(playerName)) {
-                playerWarnings.add(warning);
-            }
-        }
-        return playerWarnings;
+        return warnings.stream()
+                .filter(warning -> warning.getPlayerName().equalsIgnoreCase(playerName))
+                .collect(Collectors.toList());
     }
 
     public void removeAllWarnings(String playerName) {
-        Iterator<Warning> iterator = warnings.iterator();
-        while (iterator.hasNext()) {
-            Warning warning = iterator.next();
-            if (warning.getPlayerName().equalsIgnoreCase(playerName)) {
-                iterator.remove();
-            }
-        }
+        warnings.removeIf(warning -> warning.getPlayerName().equalsIgnoreCase(playerName));
         saveWarnings();
     }
 
@@ -68,7 +63,7 @@ public class WarningSystem {
     }
 
     private void saveWarnings() {
-        try (FileWriter writer = new FileWriter(dataFile)) {
+        try (Writer writer = new FileWriter(dataFile)) {
             gson.toJson(warnings, writer);
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,14 +71,19 @@ public class WarningSystem {
     }
 
     private void loadWarnings() {
-        if (!dataFile.exists()) {
-            return;
-        }
-        try (FileReader reader = new FileReader(dataFile)) {
-            Type listType = new TypeToken<List<Warning>>() {}.getType();
-            warnings = gson.fromJson(reader, listType);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (dataFile.exists()) {
+            try (Reader reader = new FileReader(dataFile)) {
+                Type warningListType = new TypeToken<ArrayList<Warning>>() {}.getType();
+                warnings = gson.fromJson(reader, warningListType);
+                if (warnings == null) {
+                    warnings = new ArrayList<>();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (com.google.gson.JsonSyntaxException e) {
+                // Handle the case where the file is not correctly formatted
+                warnings = new ArrayList<>();
+            }
         }
     }
 }
